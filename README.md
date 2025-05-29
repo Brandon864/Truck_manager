@@ -1,15 +1,15 @@
                             TRUCK MANAGER
- Is a Python-based web application designed to streamline logistics operations by managing trucks, drivers, and deliveries. Built with Flask, the website provides an intuitive platform for tracking delivery workflows through distinct stages: Pending, Goods Picked, In Transit, and Delivered. It features user authentication, a responsive UI styled with a custom color palette and Font Awesome icons for enhanced usability. Users can add and view trucks, assign drivers, schedule deliveries, and monitor progress, all backed by SQLite for persistent data storage.
+ It is a Python-based web application designed to streamline logistics operations by managing trucks, drivers, and deliveries. Built with Flask, the website provides an intuitive platform for tracking delivery workflows through distinct stages: Pending, Goods Picked, In Transit, and Delivered. It features user authentication, a responsive UI styled with a custom color palette and Font Awesome icons for enhanced usability. Users can add and view trucks, assign drivers, schedule deliveries, and track progress, all backed by SQLite for reliable and persistent data storage.
                           
  
                             FEATURES
     1. User Authentication   
-        .Secure Login/Register:
+        Secure Login/Register:
         
         
     
     2. Delivery Workflow
-        .Pending: when a delivery has been created
+        Pending: when a delivery has been created
 
         Goods Picked: When the goods have been picked 
 
@@ -30,9 +30,9 @@
 
         .Truck Management: The User can add and view trucks (Truck ID, type, capacity, status).
 
-        .Driver management: The User can add and view driver details as well as the truck they are assigned.
+        Driver management: The User can add and view driver details, as well as the truck to which they are assigned.
 
-        Delivery management: The User can schedule deliveries with pickup/drop off locations, the start date/time, truck, and driver assigned.
+        Delivery management: The User can schedule deliveries with pickup and drop-off locations, start dates and times, trucks, and assigned drivers.
 
 
 
