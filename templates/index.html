@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Truck Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-truck"></i> Truck Manager</h1>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <nav>
+        {% if current_user.is_authenticated %}
+            <span>Welcome, {{ current_user.username }}!</span> |
+            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a> |
+            <a href="{{ url_for('add_truck') }}"><i class="fas fa-truck-moving"></i> Add Truck</a> |
+            <a href="{{ url_for('add_driver') }}"><i class="fas fa-user"></i> Add Driver</a> |
+            <a href="{{ url_for('add_delivery') }}"><i class="fas fa-box"></i> Add Delivery</a> |
+            <a href="{{ url_for('trucks') }}"><i class="fas fa-truck-moving"></i> View Trucks</a> |
+            <a href="{{ url_for('drivers') }}"><i class="fas fa-user"></i> View Drivers</a> |
+            <a href="{{ url_for('deliveries') }}"><i class="fas fa-list"></i> View Deliveries</a> |
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a> |
+            <a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a>
+        {% endif %}
+    </nav>
+    <section class="dashboard">
+        <h2 class="section-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+        <div class="stats">
+            <div class="stat">
+                <i class="fas fa-truck-moving"></i>
+                <p>Total Trucks: <span>{{ truck_count }}</span></p>
+            </div>
+            <div class="stat">
+                <i class="fas fa-user"></i>
+                <p>Total Drivers: <span>{{ driver_count }}</span></p>
+            </div>
+            <div class="stat">
+                <i class="fas fa-box"></i>
+                <p>Active Deliveries: <span>{{ active_delivery_count }}</span></p>
+            </div>
+        </div>
+        <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Upcoming Deliveries</h3>
+        {% if scheduled_deliveries %}
+        <table>
+            <tr>
+                <th><i class="fas fa-id-badge"></i> ID</th>
+                <th><i class="fas fa-map-pin"></i> Pickup</th>
+                <th><i class="fas fa-map-marker-alt"></i> Drop-off</th>
+                <th><i class="fas fa-calendar-alt"></i> Start Date & Time</th>
+                <th><i class="fas fa-truck-moving"></i> Truck</th>
+                <th><i class="fas fa-user"></i> Driver</th>
+                <th><i class="fas fa-info-circle"></i> Status</th>
+            </tr>
+            {% for delivery in scheduled_deliveries %}
+            <tr>
+                <td>{{ delivery.id }}</td>
+                <td>{{ delivery.pickup_location }}</td>
+                <td>{{ delivery.dropoff_location }}</td>
+                <td>{{ delivery.start_datetime.strftime('%Y-%m-%d %H:%M') if delivery.start_datetime else 'N/A' }}</td>
+                <td>{{ delivery.truck.truck_id }}</td>
+                <td>{{ delivery.driver.name }}</td>
+                <td>{{ delivery.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No upcoming deliveries.</p>
+        {% endif %}
+        <h3 class="section-title"><i class="fas fa-history"></i> Recent Deliveries</h3>
+        {% if recent_deliveries %}
+        <table>
+            <tr>
+                <th><i class="fas fa-id-badge"></i> ID</th>
+                <th><i class="fas fa-map-pin"></i> Pickup</th>
+                <th><i class="fas fa-map-marker-alt"></i> Drop-off</th>
+                <th><i class="fas fa-truck-moving"></i> Truck</th>
+                <th><i class="fas fa-user"></i> Driver</th>
+                <th><i class="fas fa-info-circle"></i> Status</th>
+            </tr>
+            {% for delivery in recent_deliveries %}
+            <tr>
+                <td>{{ delivery.id }}</td>
+                <td>{{ delivery.pickup_location }}</td>
+                <td>{{ delivery.dropoff_location }}</td>
+                <td>{{ delivery.truck.truck_id }}</td>
+                <td>{{ delivery.driver.name }}</td>
+                <td>{{ delivery.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No recent deliveries.</p>
+        {% endif %}
+    </section>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deliveries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-list"></i> Deliveries</h1>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <nav>
+        {% if current_user.is_authenticated %}
+            <span>Welcome, {{ current_user.username }}!</span> |
+            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a> |
+            <a href="{{ url_for('add_truck') }}"><i class="fas fa-truck-moving"></i> Add Truck</a> |
+            <a href="{{ url_for('add_driver') }}"><i class="fas fa-user"></i> Add Driver</a> |
+            <a href="{{ url_for('add_delivery') }}"><i class="fas fa-box"></i> Add Delivery</a> |
+            <a href="{{ url_for('trucks') }}"><i class="fas fa-truck-moving"></i> View Trucks</a> |
+            <a href="{{ url_for('drivers') }}"><i class="fas fa-user"></i> View Drivers</a> |
+            <a href="{{ url_for('deliveries') }}"><i class="fas fa-list"></i> View Deliveries</a> |
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a> |
+            <a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a>
+        {% endif %}
+    </nav>
+    <section>
+        <h2 class="section-title"><i class="fas fa-list"></i> Delivery List</h2>
+        {% if deliveries %}
+        <table>
+            <tr>
+                <th><i class="fas fa-id-badge"></i> ID</th>
+                <th><i class="fas fa-map-pin"></i> Pickup</th>
+                <th><i class="fas fa-map-marker-alt"></i> Drop-off</th>
+                <th><i class="fas fa-calendar-alt"></i> Start Date & Time</th>
+                <th><i class="fas fa-truck-moving"></i> Truck</th>
+                <th><i class="fas fa-user"></i> Driver</th>
+                <th><i class="fas fa-info-circle"></i> Status</th>
+                <th><i class="fas fa-cog"></i> Actions</th>
+            </tr>
+            {% for delivery in deliveries %}
+            <tr>
+                <td>{{ delivery.id }}</td>
+                <td>{{ delivery.pickup_location }}</td>
+                <td>{{ delivery.dropoff_location }}</td>
+                <td>{{ delivery.start_datetime.strftime('%Y-%m-%d %H:%M') if delivery.start_datetime else 'N/A' }}</td>
+                <td>{{ delivery.truck.truck_id }}</td>
+                <td>{{ delivery.driver.name }}</td>
+                <td>{{ delivery.status }}</td>
+                <td>
+                    {% if delivery.status == 'Pending' %}
+                        <a href="{{ url_for('mark_goods_picked', delivery_id=delivery.id) }}" class="action-link">
+                            <i class="fas fa-box-open"></i> Mark as Goods Picked
+                        </a>
+                    {% elif delivery.status == 'Goods Picked' %}
+                        <a href="{{ url_for('mark_in_transit', delivery_id=delivery.id) }}" class="action-link">
+                            <i class="fas fa-truck"></i> Mark as In Transit
+                        </a>
+                    {% elif delivery.status == 'In Transit' %}
+                        <a href="{{ url_for('complete_delivery', delivery_id=delivery.id) }}" class="action-link">
+                            <i class="fas fa-check"></i> Mark as Delivered
+                        </a>
+                    {% else %}
+                        <span class="completed">Completed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No deliveries available.</p>
+        {% endif %}
+    </section>
+    <a href="{{ url_for('index') }}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+</body>
+</html>

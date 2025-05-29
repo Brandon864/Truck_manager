@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drivers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-user"></i> Drivers</h1>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <nav>
+        {% if current_user.is_authenticated %}
+            <span>Welcome, {{ current_user.username }}!</span> |
+            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a> |
+            <a href="{{ url_for('add_truck') }}"><i class="fas fa-truck-moving"></i> Add Truck</a> |
+            <a href="{{ url_for('add_driver') }}"><i class="fas fa-user"></i> Add Driver</a> |
+            <a href="{{ url_for('add_delivery') }}"><i class="fas fa-box"></i> Add Delivery</a> |
+            <a href="{{ url_for('trucks') }}"><i class="fas fa-truck-moving"></i> View Trucks</a> |
+            <a href="{{ url_for('drivers') }}"><i class="fas fa-user"></i> View Drivers</a> |
+            <a href="{{ url_for('deliveries') }}"><i class="fas fa-list"></i> View Deliveries</a> |
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a> |
+            <a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Register</a>
+        {% endif %}
+    </nav>
+    <section>
+        <h2 class="section-title"><i class="fas fa-user"></i> Driver List</h2>
+        {% if drivers %}
+        <table>
+            <tr>
+                <th><i class="fas fa-id-badge"></i> ID</th>
+                <th><i class="fas fa-user"></i> Name</th>
+                <th><i class="fas fa-phone"></i> Phone</th>
+                <th><i class="fas fa-envelope"></i> Email</th>
+                <th><i class="fas fa-id-card"></i> License Number</th>
+                <th><i class="fas fa-truck-moving"></i> Assigned Truck</th>
+            </tr>
+            {% for driver in drivers %}
+            <tr>
+                <td>{{ driver.id }}</td>
+                <td>{{ driver.name }}</td>
+                <td>{{ driver.phone }}</td>
+                <td>{{ driver.email if driver.email else 'N/A' }}</td>
+                <td>{{ driver.license_number }}</td>
+                <td>{{ driver.truck.truck_id if driver.truck else 'None' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No drivers available.</p>
+        {% endif %}
+    </section>
+    <a href="{{ url_for('index') }}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+</body>
+</html>
