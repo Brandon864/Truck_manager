@@ -1,5 +1,5 @@
                             TRUCK MANAGER
- It is a Python-based web application designed to streamline logistics operations by managing trucks, drivers, and deliveries. Built with Flask, the website provides an intuitive platform for tracking delivery workflows through distinct stages: Pending, Goods Picked, In Transit, and Delivered. It features user authentication, a responsive UI styled with a custom color palette and Font Awesome icons for enhanced usability. Users can add and view trucks, assign drivers, schedule deliveries, and track progress, all backed by SQLite for reliable and persistent data storage.
+ It is a Python-based website designed to streamline logistics operations by managing trucks, drivers, and deliveries. Built with Flask, the website provides an intuitive platform for tracking delivery workflows through distinct stages: Pending, Goods Picked, In Transit, and Delivered. It features user authentication, a responsive UI styled with a custom color palette and Font Awesome icons for enhanced usability. Users can add and view trucks, assign drivers, schedule deliveries, and track progress, all backed by SQLite for reliable and persistent data storage.
                           
  
                             FEATURES
